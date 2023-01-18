@@ -1,20 +1,11 @@
-{$DOMAIN}:443 {
-  # Caddy on port 443 in container to vaultwarden private instance 
-  # Use it if Caddy exposed to the net 
-  # Doc about automatic HTTPS https://caddyserver.com/docs/automatic-https
+{
 
-  log {
-	output file {$LOG_FILE} {
-        roll_size 50MiB # https://caddyserver.com/docs/caddyfile/directives/log#log
-        roll_keep 5 # https://caddyserver.com/docs/caddyfile/directives/log#log
-    }
-    level INFO
-  }
+  auto_https off
 
-  # Uncomment only one of the 2 lines. Depending if you provide your own cert or request one from Let's Encrypt
-  # tls {$SSLCERTIFICATE} {$SSLKEY}
-  tls {$EMAIL}
+}
+ :443 {
 
+  
   encode zstd gzip
 
   header / {
@@ -29,7 +20,7 @@
        # Server name remove
        -Server
    }
-  # The negotiation endpoint is also proxied to Rocket
+
   reverse_proxy /notifications/hub/negotiate bitwarden:80
 
   # Notifications redirected to the websockets server
