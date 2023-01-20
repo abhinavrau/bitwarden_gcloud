@@ -1,23 +1,11 @@
-{$EXTERNAL_DOMAIN}:443 {
-  # Caddy on port 443 in container to vaultwarden private instance 
-  # Doc about automatic HTTPS https://caddyserver.com/docs/automatic-https
+{
 
-  log {
-	output file {$LOG_FILE} {
-        roll_size 50MiB # https://caddyserver.com/docs/caddyfile/directives/log#log
-        roll_keep 5 # https://caddyserver.com/docs/caddyfile/directives/log#log
-    }
-    level INFO
-  }
+  auto_https off
 
-  tls {
-	duckdns {
-      api_token {$DUCKDNS_API_TOKEN}
-      override_domain {$EXTERNAL_DOMAIN}
-    }
-  }
+}
+ :443 {
 
-
+  
   encode zstd gzip
 
   header / {
@@ -32,7 +20,7 @@
        # Server name remove
        -Server
    }
-  # The negotiation endpoint is also proxied to Rocket
+
   reverse_proxy /notifications/hub/negotiate bitwarden:80
 
   # Notifications redirected to the websockets server
