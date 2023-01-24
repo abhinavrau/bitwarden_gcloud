@@ -73,7 +73,7 @@ services:
       - ${PWD}/caddy_tailscale/config:/config
 
    # Proxy for access on local LAN for machines that tailscale cannot be installed on.
-   proxy-caddy:
+  proxy-caddy:
     # Caddy provides an automatic HTTPS reverse proxy with Let's Encrypt cert provisioning
     # https://caddyserver.com/
     image: abhinavrau/caddy-duckdns
