@@ -11,7 +11,7 @@ done
 echo "---------Starting Tailscale proxy----------"
 tailscale serve / proxy ${TS_PORT:-8080}
 
-echo "---------Starting Tailscale proxy----------"
+echo "---------Starting Caddy ----------"
 caddy run \
         --config /etc/caddy/Caddyfile \
         --adapter caddyfile
