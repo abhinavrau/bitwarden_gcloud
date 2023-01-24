@@ -1,4 +1,4 @@
-{$EXTERNAL_DOMAIN}:443 {
+{$DOMAIN}:443 {
   # Caddy on port 443 in container to vaultwarden private instance 
   # Doc about automatic HTTPS https://caddyserver.com/docs/automatic-https
 
@@ -11,9 +11,9 @@
   }
 
   tls {
-	duckdns {
+	   dns duckdns {
       api_token {$DUCKDNS_API_TOKEN}
-      override_domain {$EXTERNAL_DOMAIN}
+      override_domain {$DOMAIN}
     }
   }
 
