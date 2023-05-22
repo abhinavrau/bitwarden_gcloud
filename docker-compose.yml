@@ -11,7 +11,6 @@ services:
     container_name: bitwarden
     depends_on: 
     - tailscale-caddy
-    - proxy-caddy
     volumes:
     - ${PWD}/bitwarden:/data
     - ${PWD}/utilities/backup.sh:/backup.sh:ro
@@ -72,29 +71,7 @@ services:
       - ${PWD}/caddy_tailscale/data:/data
       - ${PWD}/caddy_tailscale/config:/config
 
-   # Proxy for access on local LAN for machines that tailscale cannot be installed on.
-  proxy-caddy:
-    # Caddy provides an automatic HTTPS reverse proxy with Let's Encrypt cert provisioning
-    # https://caddyserver.com/
-    image: abhinavrau/caddy-duckdns
-    restart: always
-    container_name:  proxy-caddy
-    volumes:
-    - ${PWD}/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-    - ${PWD}/caddy/data:/data
-    - ${PWD}/caddy/caddycerts:/root/.caddy
-    ports:
-    - 443:443
-    dns:
-    - 1.1.1.1
-    - 8.8.8.8
-    environment:
-    - LOG_FILE=/data/logs/caddy.log
-    - ACME_AGREE=true                   # agree to ACME for auto HTTPS
-    - DOMAIN                      # LetsEncrypt domain to use. 
-    - EMAIL
-    - DUCKDNS_API_TOKEN  # Duck DNS API Token get Let's Encrypt cert using DNS challenge.
-
+  
   watchtower:
     # Watchtower will pull down your new image, gracefully shut down your existing container 
     # and restart it with the same options that were used when it was deployed initially
