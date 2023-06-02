@@ -1,6 +1,4 @@
 version: '3.7'
-
-
 services:
   bitwarden:
     # Standard Bitwarden is very resource-heavy and cannot run on micro cloud instances
@@ -57,7 +55,7 @@ services:
   tailscale-caddy:
     hostname: tailscale-caddy
     build:
-      context: ./images/tailscale
+      context: ./images/caddy_tailscale
     environment:
       TAILSCALE_AUTH_KEY: ${TAILSCALE_AUTH_KEY:?err}
       TAILSCALE_HOSTNAME: ${TAILSCALE_HOSTNAME}
