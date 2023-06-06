@@ -14,8 +14,8 @@
 
 
 terraform {
-  backend "gcs" {
-    bucket = "argolis-arau-tfstate"
-    prefix = "env/prod"
-  }
+   backend "gcs" {
+    bucket = "${var.project_id}/ownwarden-tfstate"
+    prefix = "${var.env}"
+  } 
 }

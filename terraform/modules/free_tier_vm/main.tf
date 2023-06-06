@@ -25,6 +25,17 @@ data "template_file" "default" {
     }
 }
 
+data "cloudinit_config" "conf" {
+  gzip = false
+  base64_encode = false
+
+  part {
+    content_type = "text/cloud-config"
+    content = file("${path.module}/cloud-config.yaml")
+    filename = "cloud-config.yaml"
+  }
+}
+
 resource "google_compute_address" "ip_address" {
   name = "external-ip"
   region = var.region
@@ -62,10 +73,15 @@ module "instance_template" {
   service_account       = { email = "${module.service_accounts.service_account.email}", scopes = []}
   enable_shielded_vm    = true
   machine_type          = "e2-micro"
-  startup_script        = data.template_file.default.rendered
+  metadata = {
+    user-data = "${data.cloudinit_config.conf.rendered}"
+    google-logging-enabled = true
+    google-logging-use-fluentbit = true    
+  }
   region                = var.region
   source_image_family   = "cos-105-lts" // Use Google's container optimized OS
   source_image_project  = "cos-cloud"
+  tags   = [var.hostname]
 
 }
 
@@ -82,6 +98,23 @@ module "compute_instance" {
   deletion_protection = false
   access_config       = [local.access_config]
 
+  
+
+}
+
+resource "google_compute_firewall" "allow-ssh" {
+  name    = "${local.network}-allow-ssh"
+  network =  var.vpc_name
+  project = "${var.project_id}"
+  description = "Creates firewall rule for ssh"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  target_tags   = [var.hostname]
+  source_ranges = ["0.0.0.0/0"]
 }
 
 

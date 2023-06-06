@@ -58,6 +58,7 @@ module "vpc" {
 module "ownwarden_vm" {
   source  = "../../modules/free_tier_vm"
   project_id = var.project_id
+  vpc_name = var.vpc_name
   subnet  = module.vpc.subnet
   region = var.region
   zone = var.zone

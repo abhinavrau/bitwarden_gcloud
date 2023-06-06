@@ -14,8 +14,8 @@
 
 
 terraform {
-  /* backend "gcs" {
-    bucket = "ownwarden-tfstate"
-    prefix = "env/dev"
-  } */
+   backend "gcs" {
+    bucket = "arau-ownwarden-tfstate"
+    prefix = "dev"
+  } 
 }

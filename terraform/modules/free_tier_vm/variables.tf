@@ -14,6 +14,7 @@
 
 
 variable "project_id" {}
+variable "vpc_name" {}
 variable "subnet" {}
 variable "region" {}
 variable "zone" {}
