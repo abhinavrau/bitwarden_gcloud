@@ -10,7 +10,7 @@ services:
     depends_on: 
     - tailscale-caddy
     volumes:
-    - ${PWD}/bitwarden:/data
+    - ${PWD}/../vautlwarden_data:/data
     - ${PWD}/utilities/backup.sh:/backup.sh:ro
     environment:
     - LOG_FILE=/data/bitwarden.log
@@ -64,26 +64,10 @@ services:
       TS_PORT: "8443"
     volumes:
       # a volume is used but it could be a local directory.
-      - ${PWD}/caddy_tailscale/tailscale_state:/var/lib/tailscale_state/
       - ${PWD}/caddy_tailscale/Caddyfile:/etc/caddy/Caddyfile
-      - ${PWD}/caddy_tailscale/data:/data
-      - ${PWD}/caddy_tailscale/config:/config
+      - ${PWD}/../caddy_tailscale/tailscale_state:/var/lib/tailscale_state/
+      - ${PWD}/../caddy_tailscale/data:/data
+      - ${PWD}/../caddy_tailscale/config:/config
 
-  
-  watchtower:
-    # Watchtower will pull down your new image, gracefully shut down your existing container 
-    # and restart it with the same options that were used when it was deployed initially
-    # https://github.com/containrrr/watchtower
-    image: containrrr/watchtower
-    restart: always
-    container_name: watchtower
-    depends_on: 
-    - bitwarden
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-    - WATCHTOWER_CLEANUP=true
-    - WATCHTOWER_SCHEDULE
-    - TZ
 
 
