@@ -60,6 +60,7 @@ module "service_accounts" {
     "${var.project_id}=>roles/storage.admin",
     "${var.project_id}=>roles/iam.serviceAccountUser",
     "${var.project_id}=>roles/compute.instanceAdmin.v1",
+    "${var.project_id}=>roles/logging.logWriter",
   ]
 }
 
@@ -70,7 +71,8 @@ module "instance_template" {
   project_id            = var.project_id
   subnetwork            = var.subnet
   stack_type            = "IPV4_ONLY"
-  service_account       = { email = "${module.service_accounts.service_account.email}", scopes = []}
+  service_account       = { email = "${module.service_accounts.service_account.email}", 
+                            scopes = ["https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring.write"]}
   enable_shielded_vm    = true
   machine_type          = "e2-micro"
   metadata = {
