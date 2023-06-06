@@ -54,8 +54,7 @@ services:
 
   tailscale-caddy:
     hostname: tailscale-caddy
-    build:
-      context: ./images/caddy_tailscale
+    image: abhinavrau/caddy_tailscale:latest
     environment:
       TAILSCALE_AUTH_KEY: ${TAILSCALE_AUTH_KEY:?err}
       TAILSCALE_HOSTNAME: ${TAILSCALE_HOSTNAME}
