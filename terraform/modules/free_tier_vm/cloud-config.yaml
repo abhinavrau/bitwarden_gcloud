@@ -5,15 +5,15 @@ users:
   groups: docker
 write_files:
 - path: /home/composer/.env
-  permissions: 0755
+  permissions: "0755"
   owner: composer
   content: |
       ### GLOBAL VARIABLES ###
       # Domain name for Bitwarden to run on Tailscale DNS. It always end with ts.net
       # Make sure to create a tailnet name in the DNS section of your Tailscale admin page.
-      TAILSCALE_AUTH_KEY=tskey-auth-kGBoiF5CNTRL-bp5WSSiG7KEEzs7H1gB9GEs4DSCo464L
-      TAILSCALE_HOSTNAME=kt2
-      TAILSCALE_DOMAIN=kt2.blue-gorgon.ts.net
+      TAILSCALE_AUTH_KEY=${tailscale_auth_key}
+      TAILSCALE_HOSTNAME=${tailscale_hostname}
+      TAILSCALE_DOMAIN=${tailscale_domain}
 
 
       # Local Directory to store things.
@@ -22,7 +22,7 @@ write_files:
       # Timezone - used by some containers for logs / cron
       # Find your location on this list and use the value in TZ Database Name, e.g Europe/Rome:
       #   https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-      TZ=America/New_York
+      TZ=${timezone}
 
 
       ### BITWARDEN VARIABLES ###
@@ -86,7 +86,7 @@ write_files:
       WATCHTOWER_SCHEDULE=0 0 3 ? * 0
       
 - path: /home/composer/checkout.sh
-  permissions: 0755
+  permissions: "0755"
   owner: composer
   content: |
      #!/bin/bash  
@@ -101,7 +101,7 @@ write_files:
      # Link the .env file we created above to the docker-compose directory
      cp /home/composer/.env /home/composer/ownwarden/.env
 - path: /etc/systemd/system/ownwarden.service
-  permissions: 0644
+  permissions: "0644"
   owner: root
   content: |
     [Unit]

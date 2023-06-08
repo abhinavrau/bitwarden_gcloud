@@ -22,3 +22,6 @@ variable "vm_hostname" {}
 variable "vpc_name" {}
 variable "subnet_name" {}
 variable "subnet_ip" {}
+variable "tailscale_hostname" {}
+variable "tailscale_domain" {}
+variable "tailscale_auth_key" {}

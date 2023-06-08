@@ -25,13 +25,24 @@ data "template_file" "default" {
     }
 }
 
+data template_file "cloud-init" {
+  template = file("${path.module}/cloud-config.yaml")
+
+  vars = {
+    tailscale_hostname   = var.tailscale_hostname
+    tailscale_domain     = var.tailscale_domain
+    tailscale_auth_key   = var.tailscale_auth_key
+    timezone = var.timezone
+  }
+}
+
 data "cloudinit_config" "conf" {
   gzip = false
   base64_encode = false
 
   part {
     content_type = "text/cloud-config"
-    content = file("${path.module}/cloud-config.yaml")
+    content = data.template_file.cloud-init.rendered
     filename = "cloud-config.yaml"
   }
 }
@@ -57,7 +68,8 @@ module "service_accounts" {
   names         = ["compute"]
   project_roles = [
     "${var.project_id}=>roles/viewer",
-    "${var.project_id}=>roles/storage.admin",
+    "${var.project_id}=>roles/storage.objectViewer",
+     "${var.project_id}=>roles/storage.objectCreator",
     "${var.project_id}=>roles/iam.serviceAccountUser",
     "${var.project_id}=>roles/compute.instanceAdmin.v1",
     "${var.project_id}=>roles/logging.logWriter",

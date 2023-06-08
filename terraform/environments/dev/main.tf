@@ -64,6 +64,10 @@ module "ownwarden_vm" {
   zone = var.zone
   timezone =  var.timezone
   hostname = var.vm_hostname
+ 
+  tailscale_hostname = var.tailscale_hostname
+  tailscale_domain = var.tailscale_domain
+  tailscale_auth_key = var.tailscale_auth_key
 
   depends_on = [
     module.project-services

@@ -20,3 +20,6 @@ variable "region" {}
 variable "zone" {}
 variable "hostname" {}
 variable "timezone" {}
+variable "tailscale_hostname" {}
+variable "tailscale_domain" {}
+variable "tailscale_auth_key" {}
